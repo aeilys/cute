@@ -13,12 +13,11 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #ebd9c8; /* Soft, warm beige from your images */
+            background-color: #ebd9c8; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             position: relative;
             
-            /* 🪄 Changes default mouse cursor to a magic wand emoji */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🪄</text></svg>"), auto;
         }
 
@@ -81,7 +80,6 @@
             transition: transform 0.2s, background-color 0.2s;
             box-shadow: 0 4px 10px rgba(224, 159, 133, 0.3);
             
-            /* ✨ When hovering over buttons, the magic wand tilts for a 'casting' effect */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24' transform='rotate(15 12 12)'>🪄</text></svg>"), pointer;
         }
 
@@ -215,7 +213,7 @@
             };
 
             noBtn.addEventListener('mouseenter', moveButton);
-            noBtn.addEventListener('touchstart', moveButton); // Mobile viewport integration
+            noBtn.addEventListener('touchstart', moveButton); 
         }
 
         // 🎉 4. Victory State: Fireworks of Hearts & Endless Sparkles
