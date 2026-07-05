@@ -18,7 +18,8 @@
             overflow: hidden;
             position: relative;
             
-            cursor: default;
+            /* 🪄 Custom Magic Wand Cursor */
+            cursor: url("https://img.icons8.com/fluency/32/magic-wand.png"), auto;
         }
 
         /* 💌 Main Card Container */
@@ -80,7 +81,8 @@
             transition: transform 0.2s, background-color 0.2s;
             box-shadow: 0 4px 10px rgba(224, 159, 133, 0.3);
 
-            cursor: pointer;
+            /* ✨ Turns into beautiful sparkles on hover */
+            cursor: url("https://img.icons8.com/fluency/32/sparkling.png"), pointer;
         }
 
         .btn:hover {
@@ -130,13 +132,13 @@
 </head>
 <body>
 
-    <audio id="bg-music.mp3" loop>
-        <source src="bg-music.mp3" type="audio/mpeg">
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2025/08/25/audio_dd6e771e86.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card-container">
         <div class="image-wrapper">
-            <img id="story-img" class="story-image" src="window_cat.png" alt="Cute Cat Message">
+            <img id="story-img" class="story-image" src="window_cat.jpeg" alt="Cute Cat Message">
         </div>
         
         <div id="action-area" class="btn-container">
@@ -163,9 +165,9 @@
 
         // 🚀 2. Handle Progress and Transitions
         function nextStep() {
-            // 🎶 Safety check to bypass strict browser auto-play policies on the first click
-            if (currentStep === 0) {
-                music.play().catch(error => console.log("Audio waiting for explicit user interaction profile:", error));
+            // 🎶 Plays music seamlessly on the very first click response
+            if (currentStep === 0 && music) {
+                music.play().catch(error => console.log("Audio waiting for explicit interaction:", error));
             }
 
             // ✨ Drop an explosion of sparkles on every button progression
@@ -198,7 +200,7 @@
 
             const noBtn = document.getElementById('btn-no');
 
-            // Vector shifting formula to move the button completely away from mouse/finger contact
+            // Shifting formula to move the button completely away from contact points
             const moveButton = () => {
                 const padding = 120;
                 const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
@@ -225,7 +227,7 @@
                 createSingleSparkle('🌸');
             }, 120);
 
-            actionArea.innerHTML = `<h3 style="color: #cd866a; font-family: sans-serif; font-size: 1.1rem; line-height: 1.4;">Yippeee! I knew it! 🎉 Every minute I spend with you is a blessing,[...]
+            actionArea.innerHTML = `<h3 style="color: #cd866a; font-family: sans-serif; font-size: 1.1rem; line-height: 1.4;">Yippeee! I knew it! 🎉 Every minute I spend with you is a blessing! 💖</h3>`;
         }
 
         // 🎇 5. Particle Generators
