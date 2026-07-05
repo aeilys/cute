@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Little Message For You... 💖</title>
+    <style>
+        /* 🎨 Style Reset & Layout */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ebd9c8; /* Soft, warm beige from your images */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+            
+            /* 🪄 Changes default mouse cursor to a magic wand emoji */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🪄</text></svg>"), auto;
+        }
+
+        /* 💌 Main Card Container */
+        .card-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 450px;
+            width: 90%;
+            transition: all 0.3s ease;
+            z-index: 10; /* Keeps the card above the floating sparkles */
+        }
+
+        /* 🖼️ Frame for Images */
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .story-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            opacity: 1;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        /* 🌟 Smooth Opacity Fading */
+        .fade-out {
+            opacity: 0;
+        }
+
+        /* 🔘 Interactive Button Wrapper */
+        .btn-container {
+            position: relative;
+            height: 50px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: #e09f85;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(224, 159, 133, 0.3);
+            
+            /* ✨ When hovering over buttons, the magic wand tilts for a 'casting' effect */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24' transform='rotate(15 12 12)'>🪄</text></svg>"), pointer;
+        }
+
+        .btn:hover {
+            background-color: #cd866a;
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* 🛑 The Runaway "No" Button styling */
+        #btn-no {
+            background-color: #b0b0b0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: absolute;
+            transition: left 0.12s ease, top 0.12s ease;
+        }
+
+        /* ✨ Magic Sparkle Particle System */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 24px;
+            animation: floatUp 2.5s ease-out forwards;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card-container">
+        <div class="image-wrapper">
+            <img id="story-img" class="story-image" src="window_cat.png" alt="Cute Cat Message">
+        </div>
+        
+        <div id="action-area" class="btn-container">
+            <button id="main-btn" class="btn" onclick="nextStep()">What? 🤔</button>
+        </div>
+    </div>
+
+    <script>
+        // 📋 1. Story Flow Mapping with exact file paths
+        const steps = [
+            { image: 'window_cat.png', buttonText: 'What? 🤔' },          // Step 0 (Teaser)
+            { image: 'boat_cat.png', buttonText: 'Next 💖' },             // Step 1
+            { image: 'icecream_cat.png', buttonText: 'And...? 🍦' },       // Step 2
+            { image: 'blanket_cat.png', buttonText: 'One last thing... 🥺' }, // Step 3
+            { image: 'hug_cat.png', buttonText: '' }                       // Step 4 (Finale Choices)
+        ];
+
+        let currentStep = 0;
+
+        const imgElement = document.getElementById('story-img');
+        const actionArea = document.getElementById('action-area');
+        const mainBtn = document.getElementById('main-btn');
+        const music = document.getElementById('bg-music');
+
+        // 🚀 2. Handle Progress and Transitions
+        function nextStep() {
+            // 🎶 Safety check to bypass strict browser auto-play policies on the first click
+            if (currentStep === 0) {
+                music.play().catch(error => console.log("Audio waiting for explicit user interaction profile:", error));
+            }
+
+            // ✨ Drop an explosion of sparkles on every button progression
+            createSparkleBurst();
+
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                imgElement.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    imgElement.src = steps[currentStep].image;
+                    imgElement.classList.remove('fade-out');
+                    
+                    // Trigger custom logic once we reach the finale image
+                    if (currentStep === steps.length - 1) {
+                        setupFinale();
+                    } else {
+                        mainBtn.innerText = steps[currentStep].buttonText;
+                    }
+                }, 400); // Wait time matching CSS fade opacity speed
+            }
+        }
+
+        // 🪄 3. Construct the Choice Page and Runaway Element Script
+        function setupFinale() {
+            actionArea.innerHTML = `
+                <button id="btn-yes" class="btn" onclick="celebrate()">Love you too! 🥰</button>
+                <button id="btn-no" class="btn">No 😢</button>
+            `;
+
+            const noBtn = document.getElementById('btn-no');
+
+            // Vector shifting formula to move the button completely away from mouse/finger contact
+            const moveButton = () => {
+                const padding = 120;
+                const randomX = Math.random() * (window.innerWidth - padding * 2) + padding;
+                const randomY = Math.random() * (window.innerHeight - padding * 2) + padding;
+
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${randomX}px`;
+                noBtn.style.top = `${randomY}px`;
+                
+                // Add a cute heartbreaking particle if they attempt to hit 'No'
+                createSingleSparkle('💔');
+            };
+
+            noBtn.addEventListener('mouseenter', moveButton);
+            noBtn.addEventListener('touchstart', moveButton); // Mobile viewport integration
+        }
+
+        // 🎉 4. Victory State: Fireworks of Hearts & Endless Sparkles
+        function celebrate() {
+            setInterval(() => {
+                createSingleSparkle('💖');
+                createSingleSparkle('✨');
+                createSingleSparkle('🥰');
+                createSingleSparkle('🌸');
+            }, 120);
+
+            actionArea.innerHTML = `<h3 style="color: #cd866a; font-family: sans-serif; font-size: 1.1rem; line-height: 1.4;">Yay! I knew it! 🎉 Every single day with you is a blessing! 💖</h3>`;
+        }
+
+        // 🎇 5. Particle Generators
+        function createSingleSparkle(emoji) {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.innerText = emoji || ['✨', '💖', '⭐️', '🌸'][Math.floor(Math.random() * 4)];
+            
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+            
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
+
+        function createSparkleBurst() {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createSingleSparkle();
+                }, i * 80);
+            }
+        }
+    </script>
+</body>
+</html>
